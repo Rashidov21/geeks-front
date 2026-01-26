@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 const Context = createContext();
 
 function Provider({ children }) {
-    const [url] = useState('https://api.pyblog.uz/api');
+    const [url] = useState('https://api.geeksandijan.uz/api');
     const [act, setAct] = useState(true);
     const [close, setClose] = useState(false);
     const [message, setMessage] = useState(false);

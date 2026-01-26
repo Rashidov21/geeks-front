@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://api.example.com/:path*',
+        destination: 'https://api.geeksandijan.uz/api/:path*',
       },
       {
         source: '/:path*',
@@ -13,6 +13,6 @@ module.exports = {
   },
 
   images: {
-    domains: ["api.pyblog.uz"],
+    domains: ["api.geeksandijan.uz"],
   },
 };
