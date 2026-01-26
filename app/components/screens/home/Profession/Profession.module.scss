@@ -1,0 +1,80 @@
+@import "../../../../assets/variables";
+
+.profession {
+    padding: 50px 0;
+
+    &__content {
+        background-color: $yellow;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        &__left {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-between;
+            gap: 1rem;
+            flex: 1;
+
+            .title {
+                @include title;
+                color: $black;
+            }
+
+            .subTitle {
+                @include content;
+                font-weight: 500;
+                color: $light-black;
+            }
+
+            .btn {
+                padding: .5rem 2rem;
+                border-radius: 1rem;
+                @include content;
+                font-weight: 500;
+                color: $white;
+                background-color: $orange;
+            }
+        }
+
+        &__right {
+            width: 47%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                width: 85%;
+                height: auto;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .profession {
+        &__content {
+            flex-direction: column;
+            gap: 1.5rem;
+
+            &__right {
+                order: -1;
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 512px) {
+    .profession {
+        &__content {
+            &__right {
+                display: none;
+            }
+        }
+    }
+}
