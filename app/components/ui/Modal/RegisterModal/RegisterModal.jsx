@@ -114,7 +114,7 @@ const RegisterModal = () => {
                     },
                     body: JSON.stringify({
                         course: formData.courses ? formData.courses : coursesId,
-                        first_name: formData.name,
+                        fullname: formData.name,
                         age: formData.age,
                         phone: formData.phone.replace(/\s/g, ''),
                     }),
@@ -122,10 +122,19 @@ const RegisterModal = () => {
 
                 const data = await response.json();
 
-                if (data.message.status === 'success') {
+                if (!response.ok) {
+                    console.error('Server error response:', data);
                     setMessage(true);
-                    setMessageType(data.message.status);
-                    setMessageText(data.message.text);
+                    setMessageType('error');
+                    setMessageText(data.message || data.error || `Ошибка: ${response.status}`);
+                    setLoaderForm(false);
+                    return;
+                }
+
+                if (data.message?.status === 'success' || data.status === 'success') {
+                    setMessage(true);
+                    setMessageType('success');
+                    setMessageText(data.message?.text || data.message || "Ma'lumot muvaffaqiyatli yuborildi!");
                     setLoaderForm(false);
 
                     setFormData({ name: '', courses: '', age: '', phone: '' });
@@ -133,16 +142,16 @@ const RegisterModal = () => {
                     setRegisterModal(false);
                 } else {
                     setMessage(true);
-                    setMessageType(data.message.status);
-                    setMessageText(data.message.text);
+                    setMessageType(data.message?.status || 'error');
+                    setMessageText(data.message?.text || data.message || 'Ошибка при отправке данных');
+                    setLoaderForm(false);
                 }
             } catch (error) {
                 console.error('Error during POST request:', error);
                 setMessage(true);
                 setMessageType('error');
-                setMessageText(error.message);
-            } finally {
-                setLoader(false);
+                setMessageText(error.message || 'Произошла ошибка при отправке');
+                setLoaderForm(false);
             }
         } else {
             setMessage(true);
@@ -181,13 +190,7 @@ const RegisterModal = () => {
                                                     </option>
                                                 ))
                                             ) : (
-                                                <div className={styles.skeleton__list}>
-                                                    <div className={styles.skeleton__list__item}>p</div>
-                                                    <div className={styles.skeleton__list__item}>p</div>
-                                                    <div className={styles.skeleton__list__item}>p</div>
-                                                    <div className={styles.skeleton__list__item}>p</div>
-                                                    <div className={styles.skeleton__list__item}>p</div>
-                                                </div>
+                                                <option disabled>Yuklanmoqda...</option>
                                             )}
                                         </select>
                                     </label>

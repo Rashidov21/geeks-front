@@ -94,42 +94,55 @@ const Contact = () => {
         if (formData.phone.replace(/\s/g, '').length === 12) {
             setLoaderForm(true);
 
+            const requestData = {
+                course: formData.courses ? formData.courses : coursesId,
+                fullname: formData.name,
+                age: formData.age,
+                phone: formData.phone.replace(/\s/g, ''),
+            };
+
+            console.log('Отправка данных:', requestData);
+
             try {
                 const response = await fetch(fullUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        course: formData.courses ? formData.courses : coursesId,
-                        first_name: formData.name,
-                        age: formData.age,
-                        phone: formData.phone.replace(/\s/g, ''),
-                    }),
+                    body: JSON.stringify(requestData),
                 });
 
                 const data = await response.json();
 
-                if (data.message.status === 'success') {
+                if (!response.ok) {
+                    console.error('Server error response:', data);
                     setMessage(true);
-                    setMessageType(data.message.status);
-                    setMessageText(data.message.text);
+                    setMessageType('error');
+                    setMessageText(data.message || data.error || `Ошибка: ${response.status}`);
+                    setLoaderForm(false);
+                    return;
+                }
+
+                if (data.message?.status === 'success' || data.status === 'success') {
+                    setMessage(true);
+                    setMessageType('success');
+                    setMessageText(data.message?.text || data.message || "Ma'lumot muvaffaqiyatli yuborildi!");
                     setLoaderForm(false);
 
                     setFormData({ name: '', courses: '', age: '', phone: '' });
                     setCoursesId(0);
                 } else {
                     setMessage(true);
-                    setMessageType(data.message.status);
-                    setMessageText(data.message.text);
+                    setMessageType(data.message?.status || 'error');
+                    setMessageText(data.message?.text || data.message || 'Ошибка при отправке данных');
+                    setLoaderForm(false);
                 }
             } catch (error) {
                 console.error('Error during POST request:', error);
                 setMessage(true);
                 setMessageType('error');
-                setMessageText(error.message);
-            } finally {
-                setLoader(false);
+                setMessageText(error.message || 'Произошла ошибка при отправке');
+                setLoaderForm(false);
             }
         } else {
             setMessage(true);

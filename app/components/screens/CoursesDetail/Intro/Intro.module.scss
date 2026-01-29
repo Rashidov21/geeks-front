@@ -14,6 +14,30 @@
         background-color: $light-black;
         flex-wrap: wrap;
 
+        &__backBtn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: $white;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            cursor: pointer;
+
+            &:hover {
+                color: $yellow;
+                gap: 0.8rem;
+            }
+
+            svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
         &__left {
             width: 48%;
 
